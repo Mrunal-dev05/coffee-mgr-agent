@@ -6,7 +6,6 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Google ADK](https://img.shields.io/badge/Google%20ADK-2.8.0-4285F4?logo=google&logoColor=white)](https://google.github.io/adk-docs/)
 [![Gemini](https://img.shields.io/badge/Gemini-AI-8E75B2?logo=google-gemini&logoColor=white)](https://ai.google.dev/)
-[![Deploy](https://img.shields.io/badge/Deployed%20on-Render-46E3B7?logo=render&logoColor=black)](https://render.com/)
 
 ## 🚀 Live Demo
 
@@ -14,7 +13,7 @@
 
 👉 https://coffee-shop-manager-agent.onrender.com
 
-> **Note:** The free Render instance may spin down after inactivity, so the first request can take a little longer while the service wakes up.
+> The live demo is hosted on a free cloud instance and may take a few seconds to wake up after inactivity.
 
 ---
 
@@ -116,7 +115,6 @@ This prevents the agent from silently modifying operational data and makes the w
 | Data | Google Sheets API |
 | Authentication | Google Cloud / Application Default Credentials |
 | Frontend | HTML, CSS, JavaScript |
-| Deployment | Render |
 | Container Support | Docker |
 
 ---
