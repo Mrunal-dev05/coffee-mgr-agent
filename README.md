@@ -286,10 +286,23 @@ The goal is to show how an AI agent can move from **"answering questions"** to *
 
 ## 👩‍💻 Author
 
-**Mrunal Pimpale**  
-Computer Engineering Student | Software & AI Enthusiast
+<div align="center">
 
-GitHub: https://github.com/Mrunal-dev05
+<table>
+<tr>
+<td align="center" width="220">
+
+<a href="https://github.com/Mrunal-dev05">
+  <img src="https://github.com/Mrunal-dev05.png" width="150" alt="Mrunal Pimpale">
+  <br><br>
+  <strong>Mrunal Pimpale</strong>
+</a>
+
+</td>
+</tr>
+</table>
+
+</div>
 
 ---
 
