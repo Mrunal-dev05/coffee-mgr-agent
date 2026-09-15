@@ -1,199 +1,300 @@
-# Coffee Shop Inventory Agent
+# ☕ Coffee Shop Manager AI Agent
 
-An AI-powered business analysis agent for a coffee shop that analyzes historical Point-of-Sale (POS) data to identify demand patterns, detect operational bottlenecks, and recommend staffing and inventory adjustments for university graduation weekend.
+> An AI-powered operations assistant that turns historical coffee-shop POS data into actionable staffing, inventory, and peak-demand recommendations.
 
-## Overview
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Google ADK](https://img.shields.io/badge/Google%20ADK-2.8.0-4285F4?logo=google&logoColor=white)](https://google.github.io/adk-docs/)
+[![Gemini](https://img.shields.io/badge/Gemini-AI-8E75B2?logo=google-gemini&logoColor=white)](https://ai.google.dev/)
+[![Deploy](https://img.shields.io/badge/Deployed%20on-Render-46E3B7?logo=render&logoColor=black)](https://render.com/)
 
-The Coffee Shop Inventory Agent uses Google ADK and Gemini to analyze historical sales data stored in Google Sheets.
+## 🚀 Live Demo
 
-The agent:
+**Try the deployed application:**
 
-- Reads historical POS data from Google Sheets
-- Analyzes beverage demand and wait-time patterns
-- Correlates demand patterns with graduation ceremony schedules
-- Identifies potential staffing bottlenecks
-- Recommends inventory and staffing adjustments
-- Uses a human-in-the-loop approval workflow before modifying the TODO list
-- Creates and updates a `TODO-2026` spreadsheet tab after explicit manager approval
-- Runs as a deployed application on Google Cloud Run
+👉 https://coffee-shop-manager-agent.onrender.com
 
-## Problem
+> **Note:** The free Render instance may spin down after inactivity, so the first request can take a little longer while the service wakes up.
 
-University graduation weekends can create sudden spikes in coffee-shop demand.
+---
 
-Without analyzing historical POS data, managers may:
+## 📌 Overview
 
-- Understaff busy periods
-- Experience long customer wait times
-- Run short on high-demand ingredients
-- Assign staff inefficiently
+Coffee shops near university campuses can experience sudden demand spikes during events such as graduation ceremonies. This project uses an AI agent to analyze historical Point-of-Sale (POS) data and help managers prepare for those peaks.
 
-This agent turns historical POS data into actionable operational recommendations.
-
-## How It Works
+Instead of simply generating a response, the agent follows an operational workflow:
 
 ```text
 Historical POS Data
-        |
-        v
+        ↓
    Google Sheets
-        v
-    AI Agent
-   (Google ADK)
-        |
-        v
-  Gemini Analysis
-        |
-        +------------------+
-        |                  |
-        v                  v
-Demand Patterns      Bottleneck Analysis
-        |                  |
-        +--------+---------+
-                 |
-                 v
-        Staffing & Inventory
-          Recommendations
-                 |
-                 v
-        Human Approval
-                 |
-          +------+------+
-          |             |
-         No            Yes
-          |             |
-       No change       TODO-2026
-                       Update
+        ↓
+   AI Agent (ADK)
+        ↓
+ Gemini Reasoning
+        ↓
+Demand + Bottleneck Analysis
+        ↓
+Staffing & Inventory Recommendations
+        ↓
+ Human Approval
+        ↓
+   TODO-2026 Update
+```
 
-## Technology Stack
+The key idea is **human-in-the-loop automation**: the agent can analyze and recommend, but spreadsheet changes require explicit manager approval.
 
-* Python
-* Google ADK (Agent Development Kit)
-* Gemini
-* Google Sheets API
-* Google Cloud Run
-* Google Cloud authentication
-* FastAPI
-* Docker
+---
 
-## Google Cloud Services
+## ✨ What the Agent Can Do
 
-The application uses:
+- 📊 Analyze historical POS data
+- ☕ Identify beverage and pastry demand patterns
+- ⏱️ Detect periods with high customer wait times
+- 👥 Analyze cashier and barista capacity
+- 🎓 Compare demand patterns with graduation schedules
+- 📦 Recommend inventory adjustments
+- 🧑‍💼 Recommend staffing changes
+- ✅ Ask for explicit approval before making operational changes
+- 📝 Create/update a `TODO-2026` Google Sheets tab after approval
+- 💬 Provide an interactive web interface through FastAPI
 
-* Google Cloud Run for deployment
-* Google Sheets API for POS and TODO data
-* Google Vertex AI / Gemini for agent reasoning
-* Google Cloud service account authentication
+---
 
-## Agent Workflow
+## 🧠 Example Scenario
 
-### 1. Historical Data Analysis
+Suppose historical data shows a Saturday 6:00 PM peak with:
 
-The agent reads POS data from the spreadsheet and analyzes:
+| Metric | Observation |
+|---|---:|
+| Wait time | 12 minutes |
+| Cashiers | 2 |
+| Alternative milk | 190 oz |
+| Cold brew | 40 |
 
-* Drip Coffee
-* Cold Brew
-* Extra Espresso
-* Alternative Milk usage
-* Pastry demand
-* Number of cashiers
-* Wait times
+The agent can reason that the main bottleneck is likely **barista capacity**, rather than checkout capacity, because two cashiers are already available while complex beverage demand is unusually high.
 
-### 2. Ceremony-Based Analysis
+### Recommended action
 
-The manager provides the current graduation ceremony schedule.
+> Schedule a support barista during the Saturday evening peak and increase alternative-milk inventory.
 
-The agent compares the schedule with historical demand patterns to identify relevant high-demand periods.
+The manager can then approve or reject the recommendation.
 
-### 3. Bottleneck Detection
+---
 
-The agent applies operational rules to identify potential bottlenecks.
+## 🔐 Human-in-the-Loop Design
 
-For example:
+The agent intentionally separates **analysis** from **execution**.
 
-* Wait time greater than 10 minutes
-* Fewer than 2 cashiers → recommend an additional cashier
-* 2 cashiers with complex beverage demand → identify barista capacity as the likely bottleneck
+```text
+Analyze
+   ↓
+Recommend
+   ↓
+Ask Manager for Approval
+   ↓
+ ┌───────────────┐
+ │               │
+No              Yes
+│               │
+↓               ↓
+No Change   Update TODO-2026
+```
 
-### 4. Human-in-the-Loop Approval
+This prevents the agent from silently modifying operational data and makes the workflow safer for real-world use.
 
-The agent does not immediately modify the spreadsheet.
+---
 
-It first presents:
+## 🛠️ Tech Stack
 
-* Data findings
-* Bottleneck diagnosis
-* Staffing recommendations
-* Inventory recommendations
+| Layer | Technology |
+|---|---|
+| Language | Python 3.11 |
+| API / Backend | FastAPI |
+| Agent Framework | Google ADK |
+| AI Model | Gemini |
+| Data | Google Sheets API |
+| Authentication | Google Cloud / Application Default Credentials |
+| Frontend | HTML, CSS, JavaScript |
+| Deployment | Render |
+| Container Support | Docker |
 
-The manager must explicitly approve the proposed tasks.
+---
 
-### 5. TODO-2026 Update
+## 🏗️ Architecture
 
-After approval, the agent verifies whether the `TODO-2026` sheet tab exists.
+```text
+                    ┌─────────────────────┐
+                    │   Manager / User    │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   FastAPI Web UI    │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   Google ADK Agent  │
+                    └───────┬─────┬───────┘
+                            │     │
+                 ┌──────────┘     └──────────┐
+                 ▼                           ▼
+        ┌─────────────────┐         ┌─────────────────┐
+        │ Gemini Reasoning│         │ Google Sheets   │
+        └────────┬────────┘         └────────┬────────┘
+                 │                           │
+                 └────────────┬──────────────┘
+                              ▼
+                    ┌─────────────────────┐
+                    │ Recommendations +   │
+                    │ Human Approval      │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   TODO-2026 Tab     │
+                    └─────────────────────┘
+```
 
-If necessary, it creates the tab and adds approved tasks using:
+---
 
-* Task
-* Category
-* Ceremony
-* Date_Added
+## 📂 Project Structure
 
-## Example Analysis
-
-A historical POS analysis identified a Saturday 6:00 PM bottleneck:
-
-* Wait time: 12 minutes
-* Cashiers working: 2
-* Alt Milk usage: 190 oz
-* Cold Brew: 40
-
-Because two cashiers were already working while complex beverage demand was unusually high, the agent diagnosed the likely bottleneck as barista capacity.
-
-Recommended action:
-
-**Schedule a Support Barista during the Saturday evening peak and increase Alt Milk inventory.**
-
-## Human-in-the-Loop Safety
-
-Spreadsheet modifications require explicit manager approval.
-
-The agent follows this workflow:
-
-Analyze → Recommend → Ask for Approval → Update Spreadsheet 
-
-This prevents the agent from making operational changes without human confirmation.
-
-## Deployment
-
-The application is deployed on Google Cloud Run.
-
-### Live Application
-
-[https://coffee-mgr-agent-bq2o3alxoa-el.a.run.app](https://coffee-mgr-agent-bq2o3alxoa-el.a.run.app)
-
-### Source Code
-
-[https://github.com/Mrunal-dev05/coffee-mgr-agent](https://github.com/Mrunal-dev05/coffee-mgr-agent)
-
-## Project Structure
-
+```text
 coffee-mgr-agent/
-├── main.py
-├── Dockerfile
-├── requirements.txt
+│
+├── main.py            # FastAPI app + AI agent + tools
+├── requirements.txt   # Python dependencies
+├── Dockerfile         # Container configuration
 ├── .gitignore
 └── README.md
+```
 
+---
 
-## Future Improvements
+## ⚙️ Local Setup
 
-Potential future improvements include:
+### 1. Clone the repository
 
-* More advanced demand forecasting
-* Automated inventory quantity forecasting
-* Historical trend visualization
-* Integration with additional POS systems
-* Multi-location coffee shop support
-* Automated alerts for predicted bottlenecks
+```bash
+git clone https://github.com/Mrunal-dev05/coffee-mgr-agent.git
+cd coffee-mgr-agent
+```
 
+### 2. Create a virtual environment
+
+```bash
+python -m venv .venv
+```
+
+**Windows:**
+
+```bash
+.venv\Scripts\activate
+```
+
+**macOS / Linux:**
+
+```bash
+source .venv/bin/activate
+```
+
+### 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Configure Gemini / Google Cloud credentials
+
+Set up the required Google authentication for your environment before using Gemini and Google Sheets features.
+
+### 5. Run the application
+
+```bash
+uvicorn main:app --reload
+```
+
+Then open:
+
+```text
+http://localhost:8000
+```
+
+Health check:
+
+```text
+http://localhost:8000/health
+```
+
+---
+
+## 🔌 API Endpoints
+
+| Endpoint | Method | Purpose |
+|---|---|---|
+| `/` | GET | Web interface |
+| `/health` | GET | Service health check |
+| `/chat` | POST | Send a message to the agent |
+| `/ws` | WebSocket | Interactive real-time communication |
+
+---
+
+## 📈 Operational Logic
+
+The agent focuses on practical signals from historical POS data, including:
+
+- Drip coffee demand
+- Cold brew demand
+- Extra espresso usage
+- Alternative milk usage
+- Pastry demand
+- Number of cashiers
+- Customer wait times
+- Graduation ceremony timing
+
+These signals are combined to identify likely demand peaks and operational bottlenecks.
+
+---
+
+## 🎯 Why This Project Matters
+
+This project demonstrates more than a basic chatbot. It combines:
+
+- **Agentic AI** for reasoning and tool use
+- **Real business data** through Google Sheets
+- **Operational decision support** for staffing and inventory
+- **Human approval** before state-changing actions
+- **API + web interface** for practical usage
+- **Cloud deployment** for a publicly accessible application
+
+The goal is to show how an AI agent can move from **"answering questions"** to **"analyzing data, making recommendations, and safely assisting with business operations."**
+
+---
+
+## 🔮 Future Improvements
+
+- 📊 Historical demand dashboards
+- 🔮 Automated demand forecasting
+- 📦 Quantity-level inventory forecasting
+- 🚨 Proactive alerts for predicted bottlenecks
+- 🏪 Multi-location coffee-shop support
+- 🔌 Integration with additional POS systems
+- 📅 Automatic event-calendar integration
+- 📱 Responsive mobile-first interface
+
+---
+
+## 👩‍💻 Author
+
+**Mrunal Pimpale**  
+Computer Engineering Student | Software & AI Enthusiast
+
+GitHub: https://github.com/Mrunal-dev05
+
+---
+
+## 📄 License
+
+This project is intended for learning, experimentation, and portfolio demonstration.
